@@ -5,79 +5,53 @@ SocialSphere is a modern, responsive social media web application designed to pr
 
 ✨ Features
 SocialSphere comes packed with essential features to mimic a real-world social media platform:
-
-User Authentication: Secure Login and Signup pages with clear success and error messages, including animations.
-
-Consistent Navigation: A responsive sidebar navigation system across all main pages (Home, Search, Notifications, Reels, Chat, Profile, Settings, Edit Profile).
-
-Home Feed: A dynamic user feed (on index.html) to display posts.
-
-Create Post: Functionality to simulate uploading new content.
-
-Chat/Messages: A dedicated chat interface for private conversations.
-
-Reels: A section for short-form video content with autoplay and play/pause controls.
-
-Search: A search page to find users and posts.
-
-Notifications: A page to display user notifications with read/unread states.
-
-User Profile: A personal profile page displaying user information, posts, and media, with navigation to edit the profile.
-
-Edit Profile: A dedicated page for users to update their profile information and picture.
-
-Settings: A comprehensive settings page for account, privacy, and preferences management.
-
-Responsive Design: Optimized for seamless viewing and interaction across various devices (desktop, tablet, mobile).
-
-Animations & Transitions: Smooth UI transitions and animations for an enhanced user experience.
+- User Authentication: Secure Login and Signup pages with clear success and error messages, including animations.
+- Consistent Navigation: A responsive sidebar navigation system across all main pages (Home, Search, Notifications, Reels, Chat, Profile, Settings, Edit Profile).
+- Home Feed: A dynamic user feed (on index.html) to display posts.
+- Create Post: Functionality to simulate uploading new content.
+- Chat/Messages: A dedicated chat interface for private conversations.
+- Reels: A section for short-form video content with autoplay and play/pause controls.
+- Search: A search page to find users and posts.
+- Notifications: A page to display user notifications with read/unread states.
+- User Profile: A personal profile page displaying user information, posts, and media, with navigation to edit the profile.
+- Edit Profile: A dedicated page for users to update their profile information and picture.
+- Settings: A comprehensive settings page for account, privacy, and preferences management.
+- Responsive Design: Optimized for seamless viewing and interaction across various devices (desktop, tablet, mobile).
+- Animations & Transitions: Smooth UI transitions and animations for an enhanced user experience.
 
 🖼️ Screenshots
 To make your README even more appealing, consider adding screenshots of the key pages here.
-
-Login Page: [Insert Screenshot of Login Page]
-
-Signup Page: [Insert Screenshot of Signup Page]
-
-Home Feed: [Insert Screenshot of Home Page]
-
-Profile Page: [Insert Screenshot of Profile Page]
-
-Reels Page: [Insert Screenshot of Reels Page]
-
-Chat Page: [Insert Screenshot of Chat Page]
-
-Settings Page: [Insert Screenshot of Settings Page]
+- Login Page: [Insert Screenshot of Login Page]
+- Signup Page: [Insert Screenshot of Signup Page]
+- Home Feed: [Insert Screenshot of Home Page]
+- Profile Page: [Insert Screenshot of Profile Page]
+- Reels Page: [Insert Screenshot of Reels Page]
+- Chat Page: [Insert Screenshot of Chat Page]
+- Settings Page: [Insert Screenshot of Settings Page]
 
 🛠️ Technologies Used
 This project leverages a combination of modern web technologies to deliver its features:
-
-HTML5: For structuring the web content.
-
-CSS3: For styling and visual presentation.
-
-JavaScript: For interactive elements, dynamic content, and client-side logic.
-
-Tailwind CSS: A utility-first CSS framework for rapid and responsive styling.
-
-Animate.css: A library of ready-to-use CSS animations.
-
-AOS (Animate On Scroll): A library to animate elements on scroll.
-
-Lucide Icons: A collection of beautiful and customizable open-source icons.
-
-Google Fonts: Poppins and Inter for modern typography.
+- HTML5: For structuring the web content.
+- CSS3: For styling and visual presentation.
+- JavaScript: For interactive elements, dynamic content, and client-side logic.
+- Tailwind CSS: A utility-first CSS framework for rapid and responsive styling.
+- Animate.css: A library of ready-to-use CSS animations.
+- AOS (Animate On Scroll): A library to animate elements on scroll.
+- Lucide Icons: A collection of beautiful and customizable open-source icons.
+- Google Fonts: Poppins and Inter for modern typography.
 
 🚀 Getting Started
 To get a local copy up and running, follow these simple steps:
 
-Clone the repository:
-
+1. Clone the repository:
+```bash
 git clone https://github.com/your-username/SocialSphere.git
+```
 
-Navigate to the project directory:
-
+2. Navigate to the project directory:
+```bash
 cd SocialSphere
+```
 
 Open the HTML files in your browser:
 Simply open index.html, login.html, signup.html, or any other HTML file directly in your web browser. No local server is required for basic functionality.
@@ -85,6 +59,7 @@ Simply open index.html, login.html, signup.html, or any other HTML file directly
 📁 Folder Structure
 The project follows a straightforward folder structure:
 
+```bash
 SocialSphere/
 ├── index.html          # Main user feed page
 ├── login.html          # User login page
@@ -97,6 +72,7 @@ SocialSphere/
 ├── edit-profile.html   # Page to edit user profile
 ├── settings.html       # Application settings page
 └── README.md           # This file
+```
 
 💡 Credits
 Tailwind CSS: For efficient and responsive styling.
