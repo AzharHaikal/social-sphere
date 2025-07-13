@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - SocialSphere</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Animate.css CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+    <style>
+        /* Custom styles for the gradient glow and fonts */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            position: relative;
+            display: flex; /* Use flexbox for sidebar and main content */
+        }
+
+        /* Soft gradient blue glow at the top center */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -200px; /* Adjust to position the glow higher */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px; /* Adjust width of the glow */
+            height: 400px; /* Adjust height of the glow */
+            background: radial-gradient(circle at center, rgba(173, 216, 230, 0.5) 0%, rgba(135, 206, 235, 0.3) 30%, rgba(0, 191, 255, 0) 70%); /* Light blue to transparent */
+            border-radius: 50%;
+            filter: blur(80px); /* Soft blur effect */
+            z-index: -1;
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0f2f5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a78bfa; /* Purple */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b5cf6; /* Darker purple */
+        }
+
+        /* Sidebar styling (consistent across pages) */
+        .sidebar {
+            width: 250px; /* Fixed width for desktop sidebar */
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            flex-shrink: 0;
+            position: sticky; /* Sticky on desktop */
+            top: 0;
+            height: 100vh; /* Full height */
+            overflow-y: auto;
+            z-index: 999; /* Below modals, above content */
+        }
+
+        /* Main content area adjustment for sidebar */
+        .main-content-wrapper {
+            flex-grow: 1;
+            padding: 1rem 1rem 4rem 1rem; /* Padding for mobile bottom nav */
+        }
+
+        /* Settings Page Specific Styles */
+        .settings-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .settings-section {
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            background-color: #f9fafb;
+        }
+        .settings-section h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #3b82f6; /* Blue */
+            margin-bottom: 1rem;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #8b5cf6; /* Purple */
+        }
+        input:focus + .slider {
+            box-shadow: 0 0 1px #8b5cf6;
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Mobile Navigation (consistent across pages) */
+        .navbar-mobile {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+        .navbar-mobile a, .navbar-mobile button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6b7280;
+            transition: color 0.2s ease-in-out;
+        }
+        .navbar-mobile a:hover, .navbar-mobile button:hover {
+            color: #3b82f6;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none; /* Hide sidebar on mobile */
+            }
+            .navbar-mobile {
+                display: flex; /* Show mobile nav */
+            }
+            body {
+                flex-direction: column; /* Stack content vertically on mobile */
+            }
+            .main-content-wrapper {
+                width: 100%;
+                padding-top: 1rem; /* Adjust padding for no top nav */
+            }
+            .settings-container {
+                padding: 1rem;
+            }
+            .settings-section {
+                padding: 1rem;
+            }
+        }
+        @media (min-width: 769px) {
+            .sidebar {
+                display: block; /* Show sidebar on desktop */
+            }
+            .navbar-mobile {
+                display: none; /* Hide mobile nav */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Left Sidebar Navigation (consistent with other pages) -->
+    <aside class="sidebar animate__animated animate__fadeInLeft">
+        <div class="mb-8">
+            <a href="index.html" class="text-3xl font-extrabold text-purple-700 font-poppins">SocialSphere</a>
+        </div>
+        <nav class="space-y-4">
+            <a href="index.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="home" class="w-6 h-6"></i>
+                <span>Home</span>
+            </a>
+            <a href="search.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="search" class="w-6 h-6"></i>
+                <span>Search</span>
+            </a>
+            <button id="uploadButton" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold w-full text-left">
+                <i data-lucide="plus-square" class="w-6 h-6"></i>
+                <span>Create Post</span>
+            </button>
+            <a href="reels.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="clapperboard" class="w-6 h-6"></i>
+                <span>Reels</span>
+            </a>
+            <a href="chat.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold relative">
+                <i data-lucide="message-square" class="w-6 h-6"></i>
+                <span>Messages</span>
+                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
+            </a>
+            <a href="notification.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold relative">
+                <i data-lucide="bell" class="w-6 h-6"></i>
+                <span>Notifications</span>
+                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
+            </a>
+            <a href="profile.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="user" class="w-6 h-6"></i>
+                <span>Profile</span>
+            </a>
+            <a href="settings.html" class="flex items-center space-x-3 p-3 rounded-lg text-blue-600 bg-blue-100 transition duration-200 font-semibold">
+                <i data-lucide="settings" class="w-6 h-6"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content-wrapper container mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold text-cyan-700 font-poppins mb-6 animate__animated animate__fadeInDown" data-aos="fade-down">Settings</h2>
+
+            <div class="settings-container animate__animated animate__fadeInUp" data-aos="fade-up" data-aos-delay="100">
+                <!-- Account Settings -->
+                <div class="settings-section">
+                    <h3 class="flex items-center gap-2"><i data-lucide="user"></i> Account Settings</h3>
+                    <form class="space-y-4">
+                        <div>
+                            <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email Address</label>
+                            <input type="email" id="email" value="janedoe@example.com"
+                                   class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        </div>
+                        <div>
+                            <label for="currentPassword" class="block text-gray-700 text-sm font-semibold mb-2">Current Password</label>
+                            <input type="password" id="currentPassword" placeholder="••••••••"
+                                   class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        </div>
+                        <div>
+                            <label for="newPassword" class="block text-gray-700 text-sm font-semibold mb-2">New Password</label>
+                            <input type="password" id="newPassword" placeholder="••••••••"
+                                   class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        </div>
+                        <div>
+                            <label for="confirmNewPassword" class="block text-gray-700 text-sm font-semibold mb-2">Confirm New Password</label>
+                            <input type="password" id="confirmNewPassword" placeholder="••••••••"
+                                   class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        </div>
+                        <button type="submit" class="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-700 transition duration-200 shadow-md">Update Account</button>
+                    </form>
+                </div>
+
+                <!-- Privacy Settings -->
+                <div class="settings-section">
+                    <h3 class="flex items-center gap-2"><i data-lucide="lock"></i> Privacy Settings</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <label for="privateAccount" class="text-gray-700">Private Account</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="privateAccount">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <label for="allowMessages" class="text-gray-700">Allow Messages from Everyone</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="allowMessages" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <label for="showActivityStatus" class="text-gray-700">Show Activity Status</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="showActivityStatus" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <button class="mt-6 bg-purple-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-purple-700 transition duration-200 shadow-md">Save Privacy</button>
+                </div>
+
+                <!-- Preferences -->
+                <div class="settings-section">
+                    <h3 class="flex items-center gap-2"><i data-lucide="sliders"></i> Preferences</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="language" class="block text-gray-700 text-sm font-semibold mb-2">Language</label>
+                            <select id="language" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="emailNotifications" class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" checked>
+                            <label for="emailNotifications" class="text-gray-700">Email Notifications</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="pushNotifications" class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" checked>
+                            <label for="pushNotifications" class="text-gray-700">Push Notifications</label>
+                        </div>
+                    </div>
+                    <button class="mt-6 bg-cyan-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-cyan-700 transition duration-200 shadow-md">Save Preferences</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation (consistent with other pages) -->
+    <div class="navbar-mobile fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg py-3 px-4 justify-around items-center hidden">
+        <a href="index.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="home" class="w-5 h-5"></i>
+            <span class="text-xs">Home</span>
+        </a>
+        <a href="search.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="search" class="w-5 h-5"></i>
+            <span class="text-xs">Search</span>
+        </a>
+        <button id="uploadButtonMobile" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="plus-square" class="w-5 h-5"></i>
+            <span class="text-xs">Upload</span>
+        </button>
+        <a href="reels.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="clapperboard" class="w-5 h-5"></i>
+            <span class="text-xs">Reels</span>
+        </a>
+        <a href="chat.html" class="relative flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="message-square" class="w-5 h-5"></i>
+            <span class="text-xs">Messages</span>
+            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-3 h-3 flex items-center justify-center">2</span>
+        </a>
+        <a href="notification.html" class="relative flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+            <span class="text-xs">Notifs</span>
+            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-3 h-3 flex items-center justify-center">5</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="user" class="w-5 h-5"></i>
+            <span class="text-xs">Profile</span>
+        </a>
+    </div>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800, // animation duration
+            once: true, // whether animation should happen only once - while scrolling down
+        });
+
+        // Basic form submission simulation
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                alert('Settings saved successfully!');
+                console.log('Form submitted:', new FormData(form));
+            });
+        });
+    </script>
+</body>
+</html>

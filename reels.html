@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reels - SocialSphere</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Animate.css CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+    <style>
+        /* Custom styles for the gradient glow and fonts */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            position: relative;
+            display: flex; /* Use flexbox for sidebar and main content */
+        }
+
+        /* Soft gradient blue glow at the top center */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -200px; /* Adjust to position the glow higher */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px; /* Adjust width of the glow */
+            height: 400px; /* Adjust height of the glow */
+            background: radial-gradient(circle at center, rgba(173, 216, 230, 0.5) 0%, rgba(135, 206, 235, 0.3) 30%, rgba(0, 191, 255, 0) 70%); /* Light blue to transparent */
+            border-radius: 50%;
+            filter: blur(80px); /* Soft blur effect */
+            z-index: -1;
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0f2f5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a78bfa; /* Purple */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b5cf6; /* Darker purple */
+        }
+
+        /* Sidebar styling (consistent with index.html) */
+        .sidebar {
+            width: 250px; /* Fixed width for desktop sidebar */
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            flex-shrink: 0;
+            position: sticky; /* Sticky on desktop */
+            top: 0;
+            height: 100vh; /* Full height */
+            overflow-y: auto;
+            z-index: 999; /* Below modals, above content */
+        }
+
+        /* Main content area adjustment for sidebar */
+        .main-content-wrapper {
+            flex-grow: 1;
+            padding: 1rem 1rem 4rem 1rem; /* Padding for mobile bottom nav */
+        }
+
+        /* Reels Page Specific Styles */
+        .reels-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem; /* Space between reels */
+            max-width: 400px; /* Max width for a single reel */
+            margin: 0 auto;
+            padding-bottom: 64px; /* Space for mobile nav */
+        }
+
+        .reel-card {
+            width: 100%;
+            background-color: black; /* Background for video */
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            height: 70vh; /* Make reels tall */
+            max-height: 800px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .reel-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cover the entire area */
+        }
+
+        .reel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.2) 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1rem;
+        }
+
+        .reel-user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .reel-user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        .reel-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .reel-action-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+        .reel-action-button:hover {
+            transform: scale(1.1);
+        }
+        .reel-action-button i {
+            width: 28px;
+            height: 28px;
+            margin-bottom: 0.25rem;
+        }
+
+        .play-pause-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0,0,0,0.4);
+            border-radius: 50%;
+            padding: 0.75rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .play-pause-overlay.hidden {
+            opacity: 0;
+        }
+        .play-pause-overlay i {
+            color: white;
+            width: 36px;
+            height: 36px;
+        }
+
+        /* Mobile Navigation (consistent with index.html) */
+        .navbar-mobile {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+        .navbar-mobile a, .navbar-mobile button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6b7280;
+            transition: color 0.2s ease-in-out;
+        }
+        .navbar-mobile a:hover, .navbar-mobile button:hover {
+            color: #3b82f6;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none; /* Hide sidebar on mobile */
+            }
+            .navbar-mobile {
+                display: flex; /* Show mobile nav */
+            }
+            body {
+                flex-direction: column; /* Stack content vertically on mobile */
+            }
+            .main-content-wrapper {
+                width: 100%;
+                padding-top: 1rem; /* Adjust padding for no top nav */
+            }
+            .reels-container {
+                width: 100%;
+                max-width: none;
+                padding-bottom: 64px; /* Space for mobile nav */
+            }
+            .reel-card {
+                height: 80vh; /* Taller reels on mobile */
+            }
+        }
+        @media (min-width: 769px) {
+            .sidebar {
+                display: block; /* Show sidebar on desktop */
+            }
+            .navbar-mobile {
+                display: none; /* Hide mobile nav */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Left Sidebar Navigation (consistent with index.html) -->
+    <aside class="sidebar animate__animated animate__fadeInLeft">
+        <div class="mb-8">
+            <a href="index.html" class="text-3xl font-extrabold text-purple-700 font-poppins">SocialSphere</a>
+        </div>
+        <nav class="space-y-4">
+            <a href="index.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="home" class="w-6 h-6"></i>
+                <span>Home</span>
+            </a>
+            <a href="search.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="search" class="w-6 h-6"></i>
+                <span>Search</span>
+            </a>
+            <button id="uploadButton" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold w-full text-left">
+                <i data-lucide="plus-square" class="w-6 h-6"></i>
+                <span>Create Post</span>
+            </button>
+            <a href="reels.html" class="flex items-center space-x-3 p-3 rounded-lg text-blue-600 bg-blue-100 transition duration-200 font-semibold">
+                <i data-lucide="clapperboard" class="w-6 h-6"></i>
+                <span>Reels</span>
+            </a>
+            <a href="chat.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold relative">
+                <i data-lucide="message-square" class="w-6 h-6"></i>
+                <span>Messages</span>
+                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
+            </a>
+            <a href="notification.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold relative">
+                <i data-lucide="bell" class="w-6 h-6"></i>
+                <span>Notifications</span>
+                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
+            </a>
+            <a href="profile.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="user" class="w-6 h-6"></i>
+                <span>Profile</span>
+            </a>
+            <a href="settings.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="settings" class="w-6 h-6"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content-wrapper container mx-auto px-4 py-8">
+        <div class="reels-container animate__animated animate__fadeInUp" data-aos="fade-up">
+            <!-- Reels will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <!-- Mobile Navigation (consistent with index.html) -->
+    <div class="navbar-mobile fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg py-3 px-4 justify-around items-center hidden">
+        <a href="index.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="home" class="w-5 h-5"></i>
+            <span class="text-xs">Home</span>
+        </a>
+        <a href="search.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="search" class="w-5 h-5"></i>
+            <span class="text-xs">Search</span>
+        </a>
+        <button id="uploadButtonMobile" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="plus-square" class="w-5 h-5"></i>
+            <span class="text-xs">Upload</span>
+        </button>
+        <a href="reels.html" class="flex flex-col items-center text-blue-600 transition duration-200">
+            <i data-lucide="clapperboard" class="w-5 h-5"></i>
+            <span class="text-xs">Reels</span>
+        </a>
+        <a href="chat.html" class="relative flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="message-square" class="w-5 h-5"></i>
+            <span class="text-xs">Messages</span>
+            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-3 h-3 flex items-center justify-center">2</span>
+        </a>
+        <a href="notification.html" class="relative flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+            <span class="text-xs">Notifs</span>
+            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-3 h-3 flex items-center justify-center">5</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="user" class="w-5 h-5"></i>
+            <span class="text-xs">Profile</span>
+        </a>
+    </div>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800, // animation duration
+            once: true, // whether animation should happen only once - while scrolling down
+        });
+
+        // Mock Data for Reels (using a publicly available test video)
+        const reelsData = [
+            {
+                id: 1,
+                user: 'Traveler Jane',
+                avatar: 'https://placehold.co/60x60/a78bfa/ffffff?text=J',
+                video: 'https://www.w3schools.com/html/mov_bbb.mp4', // Actual video URL
+                caption: 'Exploring the hidden gems of the mountains! #travel #mountains #adventure',
+                likes: 567,
+                comments: 89,
+                shares: 23
+            },
+            {
+                id: 2,
+                user: 'Foodie Bob',
+                avatar: 'https://placehold.co/60x60/06b6d4/ffffff?text=B',
+                video: 'https://www.w3schools.com/html/mov_bbb.mp4', // Actual video URL
+                caption: 'Quick and delicious dessert recipe! You have to try this. 🍰 #cooking #dessert #recipe',
+                likes: 812,
+                comments: 154,
+                shares: 45
+            },
+            {
+                id: 3,
+                user: 'Fitness Fanatic',
+                avatar: 'https://placehold.co/60x60/2563eb/ffffff?text=F',
+                video: 'https://www.w3schools.com/html/mov_bbb.mp4', // Actual video URL
+                caption: 'Morning workout routine to kickstart your day! 💪 #fitness #workout #motivation',
+                likes: 345,
+                comments: 67,
+                shares: 12
+            }
+        ];
+
+        // Function to render reels
+        function renderReels() {
+            const reelsContainer = document.querySelector('.reels-container');
+            reelsContainer.innerHTML = ''; // Clear existing reels
+
+            reelsData.forEach(reel => {
+                const reelCard = document.createElement('div');
+                reelCard.className = 'reel-card animate__animated animate__fadeInUp';
+                reelCard.setAttribute('data-aos', 'fade-up');
+                reelCard.setAttribute('data-aos-delay', '100');
+
+                reelCard.innerHTML = `
+                    <video src="${reel.video}" loop muted playsinline class="w-full h-full object-cover"></video>
+                    <div class="reel-overlay">
+                        <div class="flex justify-end">
+                            <button class="text-white hover:text-gray-200">
+                                <i data-lucide="more-horizontal" class="w-6 h-6"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-end justify-between">
+                            <div>
+                                <div class="reel-user-info">
+                                    <img src="${reel.avatar}" alt="${reel.user}">
+                                    <p class="font-semibold">${reel.user}</p>
+                                </div>
+                                <p class="text-sm">${reel.caption}</p>
+                            </div>
+                            <div class="reel-actions">
+                                <button class="reel-action-button">
+                                    <i data-lucide="heart" class="w-7 h-7"></i>
+                                    <span>${reel.likes}</span>
+                                </button>
+                                <button class="reel-action-button">
+                                    <i data-lucide="message-circle" class="w-7 h-7"></i>
+                                    <span>${reel.comments}</span>
+                                </button>
+                                <button class="reel-action-button">
+                                    <i data-lucide="send" class="w-7 h-7"></i>
+                                    <span>${reel.shares}</span>
+                                </button>
+                                <button class="reel-action-button">
+                                    <i data-lucide="bookmark" class="w-7 h-7"></i>
+                                    <span>Save</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="play-pause-overlay">
+                        <i data-lucide="play" class="w-9 h-9"></i>
+                    </div>
+                `;
+                reelsContainer.appendChild(reelCard);
+            });
+            lucide.createIcons(); // Re-render icons
+            AOS.refresh(); // Refresh AOS to detect new elements
+        }
+
+        // Play/Pause functionality
+        document.addEventListener('click', function(event) {
+            const playPauseOverlay = event.target.closest('.play-pause-overlay');
+            if (playPauseOverlay) {
+                const video = playPauseOverlay.previousElementSibling; // Get the video element
+                const icon = playPauseOverlay.querySelector('i');
+
+                if (!video || !icon) { // Add null checks
+                    console.error("Video or icon not found in play/pause overlay click handler.");
+                    return;
+                }
+
+                if (video.paused) {
+                    video.play();
+                    icon.setAttribute('data-lucide', 'pause');
+                    playPauseOverlay.classList.add('hidden'); // Hide overlay after play
+                } else {
+                    video.pause();
+                    icon.setAttribute('data-lucide', 'play');
+                    playPauseOverlay.classList.remove('hidden'); // Show overlay on pause
+                }
+                lucide.createIcons(); // Re-render icon
+            }
+        });
+
+        // Show play/pause overlay on video pause (e.g., when scrolling away)
+        document.addEventListener('pause', function(event) {
+            if (event.target.tagName === 'VIDEO') {
+                const reelCard = event.target.closest('.reel-card');
+                if (reelCard) {
+                    const playPauseOverlay = reelCard.querySelector('.play-pause-overlay');
+                    const icon = playPauseOverlay ? playPauseOverlay.querySelector('i') : null; // Add null check for playPauseOverlay
+                    if (icon) { // Add null check for icon
+                        icon.setAttribute('data-lucide', 'play');
+                    }
+                    if (playPauseOverlay) { // Add null check for playPauseOverlay
+                        playPauseOverlay.classList.remove('hidden');
+                    }
+                    lucide.createIcons();
+                }
+            }
+        }, true); // Use capture phase to catch all pause events
+
+        // Autoplay/Pause videos on scroll (basic implementation)
+        const observerOptions = {
+            root: null, // viewport
+            rootMargin: '0px',
+            threshold: 0.7 // video is 70% visible
+        };
+
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                const reelCard = video.closest('.reel-card');
+                if (!reelCard) {
+                    console.error("reelCard not found for video:", video);
+                    return; // Skip if parent structure is missing
+                }
+                const playPauseOverlay = reelCard.querySelector('.play-pause-overlay');
+                const icon = playPauseOverlay ? playPauseOverlay.querySelector('i') : null;
+
+                if (entry.isIntersecting) {
+                    video.play().catch(error => console.error("Video autoplay failed:", error));
+                    if (playPauseOverlay) playPauseOverlay.classList.add('hidden');
+                    if (icon) icon.setAttribute('data-lucide', 'pause');
+                } else {
+                    video.pause();
+                    if (playPauseOverlay) playPauseOverlay.classList.remove('hidden');
+                    if (icon) icon.setAttribute('data-lucide', 'play');
+                }
+                if (icon) lucide.createIcons(); // Re-render icon
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderReels();
+            // Observe all video elements
+            document.querySelectorAll('.reel-card video').forEach(video => {
+                videoObserver.observe(video);
+            });
+        });
+    </script>
+</body>
+</html>

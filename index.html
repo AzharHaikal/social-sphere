@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialSphere - Home</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Animate.css CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+    <style>
+        /* Custom styles for the gradient glow and fonts */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            position: relative;
+            display: flex; /* Use flexbox for sidebar and main content */
+        }
+
+        /* Soft gradient blue glow at the top center */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -200px; /* Adjust to position the glow higher */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px; /* Adjust width of the glow */
+            height: 400px; /* Adjust height of the glow */
+            background: radial-gradient(circle at center, rgba(173, 216, 230, 0.5) 0%, rgba(135, 206, 235, 0.3) 30%, rgba(0, 191, 255, 0) 70%); /* Light blue to transparent */
+            border-radius: 50%;
+            filter: blur(80px); /* Soft blur effect */
+            z-index: -1;
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0f2f5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a78bfa; /* Purple */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b5cf6; /* Darker purple */
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px; /* Fixed width for desktop sidebar */
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            flex-shrink: 0;
+            position: sticky; /* Sticky on desktop */
+            top: 0;
+            height: 100vh; /* Full height */
+            overflow-y: auto;
+            z-index: 999; /* Below modals, above content */
+        }
+
+        /* Main content area adjustment for sidebar */
+        .main-content-wrapper {
+            flex-grow: 1;
+            padding: 1rem 1rem 4rem 1rem; /* Padding for mobile bottom nav */
+        }
+
+        /* Story circle styling */
+        .story-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            background-image: linear-gradient(white, white), linear-gradient(to right, #8b5cf6, #3b82f6, #06b6d4); /* Purple, Blue, Cyan gradient */
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0; /* Prevent shrinking in flex container */
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+        .story-circle:hover {
+            transform: scale(1.05);
+        }
+        .story-circle img {
+            width: 54px; /* Slightly smaller than circle to show border */
+            height: 54px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white; /* White border inside gradient */
+        }
+
+        /* Modal overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: white;
+            border-radius: 1rem; /* rounded-2xl */
+            padding: 2rem; /* p-8 */
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* shadow-lg */
+            width: 90%;
+            max-width: 600px;
+            transform: translateY(-20px); /* Initial state for animation */
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        /* Notification Dropdown Styling */
+        .notification-dropdown {
+            position: absolute;
+            top: 100%; /* Position below the icon */
+            right: 0;
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+        .notification-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .notification-item {
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+        }
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        .notification-item:hover {
+            background-color: #f9fafb;
+        }
+        .notification-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .notification-item .text-content {
+            flex-grow: 1;
+        }
+        .notification-item .time {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        /* Mobile Navigation (fixed at bottom) */
+        .navbar-mobile {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+        .navbar-mobile a, .navbar-mobile button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6b7280;
+            transition: color 0.2s ease-in-out;
+        }
+        .navbar-mobile a:hover, .navbar-mobile button:hover {
+            color: #3b82f6;
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none; /* Hide sidebar on mobile */
+            }
+            .navbar-mobile {
+                display: flex; /* Show mobile nav */
+            }
+            body {
+                flex-direction: column; /* Stack content vertically on mobile */
+            }
+            .main-content-wrapper {
+                width: 100%;
+                padding-top: 1rem; /* Adjust padding for no top nav */
+            }
+            .main-feed {
+                width: 100%;
+                max-width: none;
+            }
+            .right-sidebar {
+                display: none; /* Hide sidebar on mobile */
+            }
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+        }
+        @media (min-width: 769px) {
+            .sidebar {
+                display: block; /* Show sidebar on desktop */
+            }
+            .navbar-mobile {
+                display: none; /* Hide mobile */
+            }
+            .main-feed {
+                width: 100%;
+                max-width: 600px; /* Max width for feed on desktop */
+            }
+            .right-sidebar {
+                display: block; /* Show sidebar on desktop */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Left Sidebar Navigation -->
+    <aside class="sidebar animate__animated animate__fadeInLeft">
+        <div class="mb-8">
+            <a href="index.html" class="text-3xl font-extrabold text-purple-700 font-poppins">SocialSphere</a>
+        </div>
+        <nav class="space-y-4">
+            <a href="index.html" class="flex items-center space-x-3 p-3 rounded-lg text-blue-600 bg-blue-100 transition duration-200 font-semibold">
+                <i data-lucide="home" class="w-6 h-6"></i>
+                <span>Home</span>
+            </a>
+            <a href="search.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="search" class="w-6 h-6"></i>
+                <span>Search</span>
+            </a>
+            <button id="uploadButton" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold w-full text-left">
+                <i data-lucide="plus-square" class="w-6 h-6"></i>
+                <span>Create Post</span>
+            </button>
+            <a href="reels.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="clapperboard" class="w-6 h-6"></i>
+                <span>Reels</span>
+            </a>
+            <a href="chat.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold relative">
+                <i data-lucide="message-square" class="w-6 h-6"></i>
+                <span>Messages</span>
+                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
+            </a>
+            <a href="notification.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold relative">
+                <i data-lucide="bell" class="w-6 h-6"></i>
+                <span>Notifications</span>
+                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
+            </a>
+            <a href="profile.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="user" class="w-6 h-6"></i>
+                <span>Profile</span>
+            </a>
+            <a href="settings.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="settings" class="w-6 h-6"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content-wrapper container mx-auto px-4 py-8 flex flex-col md:flex-row justify-center gap-8">
+        <!-- Main Feed (Posts & Stories) -->
+        <div class="main-feed w-full md:w-3/5 lg:w-2/5 flex-shrink-0">
+            <!-- Stories Carousel -->
+            <div class="bg-white p-4 rounded-xl shadow-md mb-8 animate__animated animate__fadeInDown" data-aos="fade-down">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Stories</h3>
+                <div id="storiesCarousel" class="owl-carousel owl-theme">
+                    <!-- Stories will be dynamically loaded here -->
+                </div>
+            </div>
+
+            <!-- Posts Feed -->
+            <div id="postsFeed" class="space-y-8">
+                <!-- Posts will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- Right Sidebar (Profile & Suggestions - Desktop Only) -->
+        <div class="right-sidebar hidden md:block w-full md:w-2/5 lg:w-1/4 flex-shrink-0">
+            <!-- Mini Profile Card -->
+            <div class="bg-white p-6 rounded-xl shadow-md mb-8 sticky top-4 animate__animated animate__fadeInRight" data-aos="fade-left">
+                <div class="flex items-center space-x-4 mb-4">
+                    <img src="https://placehold.co/80x80/a78bfa/ffffff?text=U" alt="User Profile" class="w-20 h-20 rounded-full object-cover border-4 border-purple-400">
+                    <div>
+                        <h4 class="text-xl font-bold text-purple-700 font-poppins">Jane Doe</h4>
+                        <p class="text-gray-500">@janedoe</p>
+                    </div>
+                </div>
+                <div class="flex justify-around text-center">
+                    <div>
+                        <p class="font-bold text-gray-800">1.2K</p>
+                        <p class="text-gray-500 text-sm">Followers</p>
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-800">300</p>
+                        <p class="text-gray-500 text-sm">Following</p>
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-800">50</p>
+                        <p class="text-gray-500 text-sm">Posts</p>
+                    </div>
+                </div>
+                <a href="profile.html" class="mt-6 w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 shadow-md block text-center">View Profile</a>
+            </div>
+
+            <!-- Suggestions (Example) -->
+            <div class="bg-white p-6 rounded-xl shadow-md animate__animated animate__fadeInRight" data-aos="fade-left" data-aos-delay="200">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Who to follow</h4>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <img src="https://placehold.co/50x50/3b82f6/ffffff?text=A" alt="User" class="w-12 h-12 rounded-full object-cover">
+                            <div>
+                                <p class="font-semibold text-gray-800">Alice Smith</p>
+                                <p class="text-gray-500 text-sm">@alicesmith</p>
+                            </div>
+                        </div>
+                        <button class="bg-blue-100 text-blue-600 px-4 py-1 rounded-full text-sm font-semibold hover:bg-blue-200 transition duration-200">Follow</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <img src="https://placehold.co/50x50/06b6d4/ffffff?text=B" alt="User" class="w-12 h-12 rounded-full object-cover">
+                            <div>
+                                <p class="font-semibold text-gray-800">Bob Johnson</p>
+                                <p class="text-gray-500 text-sm">@bobjohnson</p>
+                            </div>
+                        </div>
+                        <button class="bg-blue-100 text-blue-600 px-4 py-1 rounded-full text-sm font-semibold hover:bg-blue-200 transition duration-200">Follow</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation (hidden by default, shown on small screens) -->
+    <div class="navbar-mobile fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg py-3 px-4 justify-around items-center hidden">
+        <a href="index.html" class="flex flex-col items-center text-blue-600 transition duration-200">
+            <i data-lucide="home" class="w-5 h-5"></i>
+            <span class="text-xs">Home</span>
+        </a>
+        <a href="search.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="search" class="w-5 h-5"></i>
+            <span class="text-xs">Search</span>
+        </a>
+        <button id="uploadButtonMobile" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="plus-square" class="w-5 h-5"></i>
+            <span class="text-xs">Upload</span>
+        </button>
+        <a href="chat.html" class="relative flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="message-square" class="w-5 h-5"></i>
+            <span class="text-xs">Messages</span>
+            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-3 h-3 flex items-center justify-center">2</span>
+        </a>
+        <a href="notification.html" class="relative flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+            <span class="text-xs">Notifs</span>
+            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-3 h-3 flex items-center justify-center">5</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="user" class="w-5 h-5"></i>
+            <span class="text-xs">Profile</span>
+        </a>
+    </div>
+
+    <!-- Modals -->
+    <!-- New Post Modal -->
+    <div id="newPostModal" class="modal-overlay">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-cyan-600 font-poppins">Create New Post</h3>
+                <button class="text-gray-500 hover:text-gray-700" onclick="closeModal('newPostModal')">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label for="postImage" class="block text-gray-700 text-sm font-semibold mb-2">Upload Image/Video</label>
+                    <input type="file" id="postImage" accept="image/*,video/*" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                </div>
+                <div>
+                    <label for="postCaption" class="block text-gray-700 text-sm font-semibold mb-2">Caption</label>
+                    <textarea id="postCaption" rows="4" placeholder="What's on your mind?"
+                              class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-cyan-600 text-white py-3 rounded-lg font-semibold hover:bg-cyan-700 transition duration-200 shadow-md">Post</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Comments Modal -->
+    <div id="commentsModal" class="modal-overlay">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-purple-700 font-poppins">Comments</h3>
+                <button class="text-gray-500 hover:text-gray-700" onclick="closeModal('commentsModal')">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div id="commentsList" class="max-h-80 overflow-y-auto space-y-4 mb-6">
+                <!-- Comments will be dynamically loaded here -->
+            </div>
+            <div class="flex items-center gap-3">
+                <input type="text" placeholder="Add a comment..." class="flex-grow border border-gray-300 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-400">
+                <button class="bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 transition duration-200">
+                    <i data-lucide="send" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Settings Modal -->
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-blue-700 font-poppins">Settings</h3>
+                <button class="text-gray-500 hover:text-gray-700" onclick="closeModal('settingsModal')">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <p class="text-gray-700">Account settings options will go here.</p>
+                <button class="w-full bg-red-500 text-white py-2 rounded-lg font-semibold hover:bg-red-600 transition duration-200">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Dropdown UI -->
+    <div id="notificationDropdown" class="notification-dropdown">
+        <div class="p-4 border-b border-gray-200">
+            <h4 class="font-semibold text-gray-800">Notifications</h4>
+        </div>
+        <div id="notificationsList" class="py-2">
+            <!-- Notifications will be dynamically loaded here -->
+        </div>
+    </div>
+
+
+    <!-- jQuery (required for Owl Carousel) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Owl Carousel JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800, // animation duration
+            once: true, // whether animation should happen only once - while scrolling down
+        });
+
+        // --- Mock Data ---
+        const storiesData = [
+            { id: 1, user: 'Alice', avatar: 'https://placehold.co/60x60/a78bfa/ffffff?text=A' },
+            { id: 2, user: 'Bob', avatar: 'https://placehold.co/60x60/3b82f6/ffffff?text=B' },
+            { id: 3, user: 'Charlie', avatar: 'https://placehold.co/60x60/06b6d4/ffffff?text=C' },
+            { id: 4, user: 'Diana', avatar: 'https://placehold.co/60x60/8b5cf6/ffffff?text=D' },
+            { id: 5, user: 'Eve', avatar: 'https://placehold.co/60x60/2563eb/ffffff?text=E' },
+            { id: 6, user: 'Frank', avatar: 'https://placehold.co/60x60/10b981/ffffff?text=F' },
+            { id: 7, user: 'Grace', avatar: 'https://placehold.co/60x60/ef4444/ffffff?text=G' },
+            { id: 8, user: 'Heidi', avatar: 'https://placehold.co/60x60/f97316/ffffff?text=H' },
+        ];
+
+        const postsData = [
+            {
+                id: 1,
+                user: 'Jane Doe',
+                avatar: 'https://placehold.co/60x60/a78bfa/ffffff?text=U',
+                time: '2 hours ago',
+                image: 'https://placehold.co/800x600/3b82f6/ffffff?text=Beautiful+Landscape',
+                caption: 'Enjoying the serene beauty of nature! #nature #travel #peace',
+                likes: 125,
+                comments: [
+                    { user: 'Alice', text: 'Stunning view!' },
+                    { user: 'Bob', text: 'Wish I was there!' }
+                ]
+            },
+            {
+                id: 2,
+                user: 'Alice Smith',
+                avatar: 'https://placehold.co/60x60/3b82f6/ffffff?text=A',
+                time: '5 hours ago',
+                image: 'https://placehold.co/800x600/06b6d4/ffffff?text=Cityscape+Vibes',
+                caption: 'City lights and late nights. ✨ #citylife #nightout',
+                likes: 88,
+                comments: [
+                    { user: 'Charlie', text: 'Looks amazing!' },
+                    { user: 'Diana', text: 'Love this vibe!' }
+                ]
+            },
+            {
+                id: 3,
+                user: 'Bob Johnson',
+                avatar: 'https://placehold.co/60x60/06b6d4/ffffff?text=B',
+                time: '1 day ago',
+                image: 'https://placehold.co/800x600/8b5cf6/ffffff?text=Delicious+Food',
+                caption: 'Homemade pasta for dinner! So good. 🍝 #cooking #foodie',
+                likes: 210,
+                comments: [
+                    { user: 'Eve', text: 'Yum! Send me some!' },
+                    { user: 'Frank', text: 'Recipe please!' },
+                    { user: 'Jane Doe', text: 'Looks delicious!' }
+                ]
+            },
+            {
+                id: 4,
+                user: 'Diana Prince',
+                avatar: 'https://placehold.co/60x60/8b5cf6/ffffff?text=D',
+                time: '2 days ago',
+                image: 'https://placehold.co/800x600/2563eb/ffffff?text=Workout+Motivation',
+                caption: 'Pushing my limits! 💪 Never give up. #fitness #motivation',
+                likes: 95,
+                comments: [
+                    { user: 'Grace', text: 'Inspiring!' }
+                ]
+            }
+        ];
+
+        const notificationsData = [
+            { id: 1, user: 'Alice Smith', avatar: 'https://placehold.co/40x40/a78bfa/ffffff?text=A', type: 'liked', content: 'liked your post.', time: '10m' },
+            { id: 2, user: 'Bob Johnson', avatar: 'https://placehold.co/40x40/3b82f6/ffffff?text=B', type: 'commented', content: 'commented on your post: "Looks delicious!"', time: '30m' },
+            { id: 3, user: 'Charlie Brown', avatar: 'https://placehold.co/40x40/06b6d4/ffffff?text=C', type: 'followed', content: 'started following you.', time: '1h' },
+            { id: 4, user: 'Diana Prince', avatar: 'https://placehold.co/40x40/8b5cf6/ffffff?text=D', type: 'liked', content: 'liked your post.', time: '2h' },
+            { id: 5, user: 'Eve Green', avatar: 'https://placehold.co/40x40/2563eb/ffffff?text=E', type: 'mentioned', content: 'mentioned you in a comment.', time: '5h' },
+        ];
+
+
+        // --- Dynamic Content Rendering ---
+
+        // Function to render stories
+        function renderStories() {
+            const storiesCarousel = $('#storiesCarousel');
+            storiesCarousel.empty(); // Clear existing stories
+
+            storiesData.forEach(story => {
+                const storyHtml = `
+                    <div class="item text-center">
+                        <div class="story-circle mx-auto">
+                            <img src="${story.avatar}" alt="${story.user}'s Story">
+                        </div>
+                        <p class="text-xs text-gray-700 mt-2">${story.user}</p>
+                    </div>
+                `;
+                storiesCarousel.append(storyHtml);
+            });
+
+            // Initialize Owl Carousel after content is loaded
+            storiesCarousel.owlCarousel({
+                loop: false,
+                margin: 15,
+                nav: false,
+                dots: false,
+                responsive: {
+                    0: { items: 4 },
+                    600: { items: 6 },
+                    1000: { items: 8 }
+                }
+            });
+        }
+
+        // Function to render posts
+        function renderPosts() {
+            const postsFeed = document.getElementById('postsFeed');
+            postsFeed.innerHTML = ''; // Clear existing posts
+
+            postsData.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'bg-white p-6 rounded-xl shadow-md animate__animated animate__fadeInUp';
+                postElement.setAttribute('data-aos', 'fade-up');
+                postElement.setAttribute('data-aos-delay', '100'); // Stagger animations
+
+                // Generate comments HTML
+                const commentsHtml = post.comments.map(comment => `
+                    <div class="flex items-start space-x-2">
+                        <p class="text-gray-800"><span class="font-semibold text-purple-600">${comment.user}</span> ${comment.text}</p>
+                    </div>
+                `).join('');
+
+                postElement.innerHTML = `
+                    <!-- Post Header -->
+                    <div class="flex items-center space-x-3 mb-4">
+                        <img src="${post.avatar}" alt="${post.user}'s Profile" class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <p class="font-semibold text-gray-800">${post.user}</p>
+                            <p class="text-gray-500 text-sm">${post.time}</p>
+                        </div>
+                    </div>
+
+                    <!-- Post Image/Video -->
+                    <div class="mb-4 rounded-lg overflow-hidden">
+                        <img src="${post.image}" alt="Post Image" class="w-full h-auto object-cover">
+                    </div>
+
+                    <!-- Post Actions -->
+                    <div class="flex items-center space-x-4 mb-3">
+                        <button class="flex items-center text-gray-600 hover:text-red-500 transition duration-200 like-button" data-post-id="${post.id}">
+                            <i data-lucide="heart" class="w-6 h-6"></i>
+                            <span class="ml-1 font-medium likes-count">${post.likes}</span>
+                        </button>
+                        <button class="flex items-center text-gray-600 hover:text-blue-500 transition duration-200 comment-button" data-post-id="${post.id}">
+                            <i data-lucide="message-circle" class="w-6 h-6"></i>
+                            <span class="ml-1 font-medium">${post.comments.length}</span>
+                        </button>
+                        <button class="text-gray-600 hover:text-cyan-500 transition duration-200">
+                            <i data-lucide="send" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+
+                    <!-- Post Caption -->
+                    <p class="text-gray-800 mb-2">
+                        <span class="font-semibold text-purple-600">${post.user}</span> ${post.caption}
+                    </p>
+
+                    <!-- View All Comments Link -->
+                    <button class="text-gray-500 text-sm hover:underline view-comments-link" data-post-id="${post.id}">
+                        View all ${post.comments.length} comments
+                    </button>
+
+                    <!-- Recent Comments (optional, can show a few or none) -->
+                    <div class="mt-2 text-sm space-y-1">
+                        ${commentsHtml}
+                    </div>
+                `;
+                postsFeed.appendChild(postElement);
+            });
+
+            // Re-initialize Lucide icons for newly added elements
+            lucide.createIcons();
+            // Re-initialize AOS for newly added elements
+            AOS.refresh();
+        }
+
+        // Function to render notifications
+        function renderNotifications() {
+            // This function is still present but the dropdown is now part of the sidebar/mobile nav logic
+            // The actual notification list is on notification.html
+            console.log("Notifications rendered (mock data for dropdown).");
+        }
+
+
+        // --- Modal Functions ---
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // --- Event Listeners ---
+
+        // Upload Button (Desktop & Mobile)
+        document.getElementById('uploadButton').addEventListener('click', () => openModal('newPostModal'));
+        document.getElementById('uploadButtonMobile').addEventListener('click', () => openModal('newPostModal'));
+
+        // Settings Button (now navigates to settings.html)
+        // The settings link in the sidebar directly navigates, no modal opening from here.
+        // The settings modal is still available if you want to open it from other parts of the app.
+
+
+        // Notifications Button (Desktop Sidebar & Mobile Nav)
+        const notificationsButton = document.querySelector('aside .sidebar nav a[href="notification.html"]');
+        const notificationsButtonMobile = document.querySelector('.navbar-mobile a[href="notification.html"]');
+        const notificationDropdown = document.getElementById('notificationDropdown');
+
+        // This logic is for the dropdown, which is now separate from the notification.html page
+        // The dropdown is still part of index.html for quick access.
+        if (notificationsButton) {
+            notificationsButton.addEventListener('click', (event) => {
+                // Prevent default navigation to notification.html when clicking the dropdown trigger
+                event.preventDefault();
+                event.stopPropagation(); // Prevent click from closing immediately
+                notificationDropdown.classList.toggle('active');
+            });
+        }
+        if (notificationsButtonMobile) {
+             notificationsButtonMobile.addEventListener('click', (event) => {
+                // Prevent default navigation to notification.html when clicking the dropdown trigger
+                event.preventDefault();
+                event.stopPropagation(); // Prevent click from closing immediately
+                notificationDropdown.classList.toggle('active');
+            });
+        }
+
+
+        // Close dropdown if clicked outside
+        document.addEventListener('click', (event) => {
+            if (notificationDropdown && !notificationDropdown.contains(event.target) &&
+                (notificationsButton && !notificationsButton.contains(event.target)) &&
+                (notificationsButtonMobile && !notificationsButtonMobile.contains(event.target))) {
+                notificationDropdown.classList.remove('active');
+            }
+        });
+
+
+        // Post Interaction: Like & Comment
+        document.addEventListener('click', function(event) {
+            // Like Button
+            if (event.target.closest('.like-button')) {
+                const likeButton = event.target.closest('.like-button');
+                const likesCountSpan = likeButton.querySelector('.likes-count');
+                const heartIcon = likeButton.querySelector('i[data-lucide="heart"]');
+                let currentLikes = parseInt(likesCountSpan.textContent);
+
+                if (heartIcon.classList.contains('fill-red-500')) { // Already liked
+                    heartIcon.classList.remove('fill-red-500', 'text-red-500');
+                    heartIcon.classList.add('text-gray-600');
+                    likesCountSpan.textContent = currentLikes - 1;
+                } else { // Not liked
+                    heartIcon.classList.add('fill-red-500', 'text-red-500');
+                    heartIcon.classList.remove('text-gray-600');
+                    likesCountSpan.textContent = currentLikes + 1;
+                }
+                lucide.createIcons(); // Re-render icon to fill
+            }
+
+            // Comment Button / View Comments Link
+            if (event.target.closest('.comment-button') || event.target.closest('.view-comments-link')) {
+                const postId = event.target.closest('[data-post-id]').dataset.postId;
+                const post = postsData.find(p => p.id == postId);
+                const commentsList = document.getElementById('commentsList');
+                commentsList.innerHTML = ''; // Clear previous comments
+
+                if (post && post.comments.length > 0) {
+                    post.comments.forEach(comment => {
+                        const commentDiv = document.createElement('div');
+                        commentDiv.className = 'flex items-start space-x-2';
+                        commentDiv.innerHTML = `
+                            <img src="https://placehold.co/30x30/cccccc/ffffff?text=${comment.user.charAt(0)}" alt="${comment.user}" class="w-8 h-8 rounded-full object-cover">
+                            <p class="text-gray-800"><span class="font-semibold text-purple-600">${comment.user}</span> ${comment.text}</p>
+                        `;
+                        commentsList.appendChild(commentDiv);
+                    });
+                } else {
+                    commentsList.innerHTML = '<p class="text-gray-500 text-center">No comments yet. Be the first!</p>';
+                }
+                openModal('commentsModal');
+            }
+        });
+
+
+        // Initial rendering on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderStories();
+            renderPosts();
+            // No need to call renderNotifications here as it's for the dropdown, not the main page content
+        });
+    </script>
+</body>
+</html>

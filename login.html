@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SocialSphere</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Animate.css CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom styles for the gradient glow and fonts */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Hide overflow for glow effect */
+            position: relative;
+        }
+
+        /* Soft gradient blue glow at the top center */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -200px; /* Adjust to position the glow higher */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px; /* Adjust width of the glow */
+            height: 400px; /* Adjust height of the glow */
+            background: radial-gradient(circle at center, rgba(173, 216, 230, 0.5) 0%, rgba(135, 206, 235, 0.3) 30%, rgba(0, 191, 255, 0) 70%); /* Light blue to transparent */
+            border-radius: 50%;
+            filter: blur(80px); /* Soft blur effect */
+            z-index: -1;
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0f2f5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a78bfa; /* Purple */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b5cf6; /* Darker purple */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4 flex justify-center items-center h-full">
+        <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md animate__animated animate__fadeInDown">
+            <h2 class="text-3xl font-bold text-center mb-6 text-purple-700 font-poppins">Welcome Back!</h2>
+            <p class="text-center text-gray-600 mb-8">Log in to continue your journey.</p>
+
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email Address</label>
+                    <div class="relative">
+                        <input type="email" id="email" name="email" placeholder="you@example.com"
+                               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200"
+                               required>
+                        <i data-lucide="mail" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <p id="emailError" class="text-red-500 text-xs mt-1 hidden"></p>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password</label>
+                    <div class="relative">
+                        <input type="password" id="password" name="password" placeholder="••••••••"
+                               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200"
+                               required>
+                        <i data-lucide="lock" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <p id="passwordError" class="text-red-500 text-xs mt-1 hidden"></p>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="rememberMe" name="rememberMe" class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                        <label for="rememberMe" class="ml-2 block text-sm text-gray-900">Remember me</label>
+                    </div>
+                    <a href="#" class="text-sm text-blue-600 hover:underline">Forgot Password?</a>
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 shadow-md">
+                    Log In
+                </button>
+            </form>
+
+            <p class="text-center text-gray-600 mt-6">
+                Don't have an account?
+                <a href="signup.html" class="text-purple-600 hover:underline font-semibold">Sign Up</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+
+            let isValid = true;
+
+            // Email validation
+            if (emailInput.value.trim() === '') {
+                emailError.textContent = 'Email is required.';
+                emailError.classList.remove('hidden');
+                emailInput.classList.add('border-red-500');
+                isValid = false;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+                emailError.textContent = 'Please enter a valid email address.';
+                emailError.classList.remove('hidden');
+                emailInput.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                emailError.classList.add('hidden');
+                emailInput.classList.remove('border-red-500');
+            }
+
+            // Password validation
+            if (passwordInput.value.trim() === '') {
+                passwordError.textContent = 'Password is required.';
+                passwordError.classList.remove('hidden');
+                passwordInput.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                passwordError.classList.add('hidden');
+                passwordInput.classList.remove('border-red-500');
+            }
+
+            if (isValid) {
+                // Simulate successful login
+                console.log('Login successful!');
+                console.log('Email:', emailInput.value);
+                console.log('Password:', passwordInput.value);
+
+                // In a real application, you would send this data to a server
+                // and redirect to the main feed page upon successful authentication.
+                // For now, we'll just log to console and simulate a redirect.
+                alert('Login successful! Redirecting to home page.'); // Using alert for simulation as per instructions
+                window.location.href = 'index.html'; // Redirect to the main feed page
+            }
+        });
+    </script>
+</body>
+</html>

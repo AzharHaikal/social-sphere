@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - SocialSphere</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Animate.css CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+    <style>
+        /* Custom styles for the gradient glow and fonts */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            position: relative;
+            display: flex; /* Use flexbox for sidebar and main content */
+        }
+
+        /* Soft gradient blue glow at the top center */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -200px; /* Adjust to position the glow higher */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px; /* Adjust width of the glow */
+            height: 400px; /* Adjust height of the glow */
+            background: radial-gradient(circle at center, rgba(173, 216, 230, 0.5) 0%, rgba(135, 206, 235, 0.3) 30%, rgba(0, 191, 255, 0) 70%); /* Light blue to transparent */
+            border-radius: 50%;
+            filter: blur(80px); /* Soft blur effect */
+            z-index: -1;
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0f2f5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a78bfa; /* Purple */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b5cf6; /* Darker purple */
+        }
+
+        /* Sidebar styling (consistent across pages) */
+        .sidebar {
+            width: 250px; /* Fixed width for desktop sidebar */
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            flex-shrink: 0;
+            position: sticky; /* Sticky on desktop */
+            top: 0;
+            height: 100vh; /* Full height */
+            overflow-y: auto;
+            z-index: 999; /* Below modals, above content */
+        }
+
+        /* Main content area adjustment for sidebar */
+        .main-content-wrapper {
+            flex-grow: 1;
+            padding: 1rem 1rem 4rem 1rem; /* Padding for mobile bottom nav */
+        }
+
+        /* Profile page specific styles */
+        .profile-header {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #a78bfa; /* Purple border */
+            margin: 0 auto 1rem;
+        }
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        .profile-stats div {
+            text-align: center;
+        }
+        .profile-tabs {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-top: 2rem;
+            overflow: hidden;
+        }
+        .tab-button {
+            padding: 1rem 0;
+            flex-grow: 1;
+            text-align: center;
+            font-weight: 600;
+            color: #6b7280; /* Gray */
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-button.active {
+            color: #3b82f6; /* Blue */
+            border-color: #3b82f6;
+        }
+        .tab-content {
+            padding: 1.5rem;
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .post-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        .post-grid img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease-in-out;
+        }
+        .post-grid img:hover {
+            transform: scale(1.03);
+        }
+
+        /* Mobile Navigation (consistent across pages) */
+        .navbar-mobile {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+        .navbar-mobile a, .navbar-mobile button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6b7280;
+            transition: color 0.2s ease-in-out;
+        }
+        .navbar-mobile a:hover, .navbar-mobile button:hover {
+            color: #3b82f6;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none; /* Hide sidebar on mobile */
+            }
+            .navbar-mobile {
+                display: flex; /* Show mobile nav */
+            }
+            body {
+                flex-direction: column; /* Stack content vertically on mobile */
+            }
+            .main-content-wrapper {
+                width: 100%;
+                padding-top: 1rem; /* Adjust padding for no top nav */
+            }
+            .profile-header {
+                padding: 1.5rem;
+            }
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+            .profile-stats {
+                flex-direction: column;
+                gap: 1rem;
+                padding-top: 1rem;
+            }
+            .post-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            .post-grid img {
+                height: 100px;
+            }
+        }
+        @media (min-width: 769px) {
+            .sidebar {
+                display: block; /* Show sidebar on desktop */
+            }
+            .navbar-mobile {
+                display: none; /* Hide mobile nav */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Left Sidebar Navigation (consistent with other pages) -->
+    <aside class="sidebar animate__animated animate__fadeInLeft">
+        <div class="mb-8">
+            <a href="index.html" class="text-3xl font-extrabold text-purple-700 font-poppins">SocialSphere</a>
+        </div>
+        <nav class="space-y-4">
+            <a href="index.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="home" class="w-6 h-6"></i>
+                <span>Home</span>
+            </a>
+            <a href="search.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="search" class="w-6 h-6"></i>
+                <span>Search</span>
+            </a>
+            <button id="uploadButton" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold w-full text-left">
+                <i data-lucide="plus-square" class="w-6 h-6"></i>
+                <span>Create Post</span>
+            </button>
+            <a href="reels.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="clapperboard" class="w-6 h-6"></i>
+                <span>Reels</span>
+            </a>
+            <a href="chat.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold relative">
+                <i data-lucide="message-square" class="w-6 h-6"></i>
+                <span>Messages</span>
+                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
+            </a>
+            <a href="notification.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold relative">
+                <i data-lucide="bell" class="w-6 h-6"></i>
+                <span>Notifications</span>
+                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
+            </a>
+            <a href="profile.html" class="flex items-center space-x-3 p-3 rounded-lg text-blue-600 bg-blue-100 transition duration-200 font-semibold">
+                <i data-lucide="user" class="w-6 h-6"></i>
+                <span>Profile</span>
+            </a>
+            <a href="settings.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition duration-200 font-semibold">
+                <i data-lucide="settings" class="w-6 h-6"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content-wrapper container mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto">
+            <!-- Profile Header Section -->
+            <div class="profile-header animate__animated animate__fadeInDown" data-aos="fade-down">
+                <img src="https://placehold.co/120x120/a78bfa/ffffff?text=U" alt="User Avatar" class="profile-avatar">
+                <h2 class="text-3xl font-bold text-purple-700 font-poppins mb-2">Jane Doe</h2>
+                <p class="text-gray-600 mb-4">@janedoe</p>
+                <p class="text-gray-700 max-w-lg mx-auto leading-relaxed">
+                    Passionate photographer capturing moments, exploring new places, and sharing my journey. Living life one click at a time. 📸✈️
+                </p>
+                <div class="profile-stats">
+                    <div>
+                        <p class="font-bold text-gray-800 text-lg">50</p>
+                        <p class="text-gray-500 text-sm">Posts</p>
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-800 text-lg">1.2K</p>
+                        <p class="text-gray-500 text-sm">Followers</p>
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-800 text-lg">300</p>
+                        <p class="text-gray-500 text-sm">Following</p>
+                    </div>
+                </div>
+                <a href="edit-profile.html" class="mt-6 bg-blue-500 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 shadow-md inline-block">Edit Profile</a>
+            </div>
+
+            <!-- Profile Tabs Section -->
+            <div class="profile-tabs animate__animated animate__fadeInUp" data-aos="fade-up" data-aos-delay="200">
+                <div class="flex border-b border-gray-200">
+                    <button class="tab-button active" data-tab="posts">
+                        <i data-lucide="grid" class="w-5 h-5 inline-block mr-2"></i> Posts
+                    </button>
+                    <button class="tab-button" data-tab="media">
+                        <i data-lucide="image" class="w-5 h-5 inline-block mr-2"></i> Media
+                    </button>
+                    <button class="tab-button" data-tab="saved">
+                        <i data-lucide="bookmark" class="w-5 h-5 inline-block mr-2"></i> Saved
+                    </button>
+                </div>
+
+                <div id="postsContent" class="tab-content active">
+                    <div class="post-grid">
+                        <img src="https://placehold.co/300x300/3b82f6/ffffff?text=Post+1" alt="Post 1">
+                        <img src="https://placehold.co/300x300/06b6d4/ffffff?text=Post+2" alt="Post 2">
+                        <img src="https://placehold.co/300x300/a78bfa/ffffff?text=Post+3" alt="Post 3">
+                        <img src="https://placehold.co/300x300/8b5cf6/ffffff?text=Post+4" alt="Post 4">
+                        <img src="https://placehold.co/300x300/2563eb/ffffff?text=Post+5" alt="Post 5">
+                        <img src="https://placehold.co/300x300/10b981/ffffff?text=Post+6" alt="Post 6">
+                    </div>
+                </div>
+
+                <div id="mediaContent" class="tab-content">
+                    <div class="post-grid">
+                        <img src="https://placehold.co/300x300/f97316/ffffff?text=Video+1" alt="Video 1">
+                        <img src="https://placehold.co/300x300/ef4444/ffffff?text=Video+2" alt="Video 2">
+                        <img src="https://placehold.co/300x300/6366f1/ffffff?text=Image+7" alt="Image 7">
+                    </div>
+                </div>
+
+                <div id="savedContent" class="tab-content">
+                    <p class="text-gray-600 text-center py-4">No saved posts yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation (consistent with index.html) -->
+    <div class="navbar-mobile fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg py-3 px-4 justify-around items-center hidden">
+        <a href="index.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="home" class="w-5 h-5"></i>
+            <span class="text-xs">Home</span>
+        </a>
+        <a href="search.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="search" class="w-5 h-5"></i>
+            <span class="text-xs">Search</span>
+        </a>
+        <button id="uploadButtonMobile" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="plus-square" class="w-5 h-5"></i>
+            <span class="text-xs">Upload</span>
+        </button>
+        <a href="reels.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="clapperboard" class="w-5 h-5"></i>
+            <span class="text-xs">Reels</span>
+        </a>
+        <a href="chat.html" class="relative flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="message-square" class="w-5 h-5"></i>
+            <span class="text-xs">Messages</span>
+            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-3 h-3 flex items-center justify-center">2</span>
+        </a>
+        <a href="notification.html" class="relative flex flex-col items-center text-gray-600 hover:text-blue-600 transition duration-200">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+            <span class="text-xs">Notifs</span>
+            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-3 h-3 flex items-center justify-center">5</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center text-blue-600 transition duration-200">
+            <i data-lucide="user" class="w-5 h-5"></i>
+            <span class="text-xs">Profile</span>
+        </a>
+    </div>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800, // animation duration
+            once: true, // whether animation should happen only once - while scrolling down
+        });
+
+        // Tab switching logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    const targetTab = button.dataset.tab;
+                    document.getElementById(targetTab + 'Content').classList.add('active');
+                    lucide.createIcons(); // Re-render icons if new content has them
+                });
+            });
+        });
+    </script>
+</body>
+</html>
