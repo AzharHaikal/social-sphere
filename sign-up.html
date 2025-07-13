@@ -57,8 +57,13 @@
     </style>
 </head>
 <body class="bg-gray-100">
+    <!-- Message Container -->
+    <div id="messageContainer" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm hidden">
+        <!-- Message content will be inserted here by JavaScript -->
+    </div>
+
     <div class="container mx-auto p-4 flex justify-center items-center h-full">
-        <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md animate__animated animate__fadeInUp">
+        <div id="signupCard" class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md animate__animated animate__fadeInUp">
             <h2 class="text-3xl font-bold text-center mb-6 text-cyan-600 font-poppins">Join SocialSphere!</h2>
             <p class="text-center text-gray-600 mb-8">Create your account to connect with friends.</p>
 
@@ -115,7 +120,7 @@
 
             <p class="text-center text-gray-600 mt-6">
                 Already have an account?
-                <a href="login.html" class="text-blue-600 hover:underline font-semibold">Log In</a>
+                <a href="sign-in.html" class="text-blue-600 hover:underline font-semibold">Log In</a>
             </p>
         </div>
     </div>
@@ -124,18 +129,64 @@
         // Initialize Lucide icons
         lucide.createIcons();
 
-        document.getElementById('signupForm').addEventListener('submit', function(event) {
+        const signupForm = document.getElementById('signupForm');
+        const signupCard = document.getElementById('signupCard');
+        const messageContainer = document.getElementById('messageContainer');
+
+        const fullNameInput = document.getElementById('fullName');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+
+        const fullNameError = document.getElementById('fullNameError');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+        /**
+         * Displays a styled message (success or error) in a toast-like notification.
+         * @param {string} type - 'success' or 'error'.
+         * @param {string} message - The message to display.
+         */
+        function showMessage(type, message) {
+            messageContainer.innerHTML = ''; // Clear previous messages
+            messageContainer.classList.remove('hidden');
+
+            let iconHtml = '';
+            let bgColor = '';
+            let textColor = '';
+            let borderColor = '';
+
+            if (type === 'success') {
+                iconHtml = '<i data-lucide="check-circle" class="w-6 h-6 text-green-500"></i>';
+                bgColor = 'bg-green-100';
+                textColor = 'text-green-800';
+                borderColor = 'border-green-400';
+            } else if (type === 'error') {
+                iconHtml = '<i data-lucide="x-circle" class="w-6 h-6 text-red-500"></i>';
+                bgColor = 'bg-red-100';
+                textColor = 'text-red-800';
+                borderColor = 'border-red-400';
+            }
+
+            const messageHtml = `
+                <div class="flex items-center p-4 rounded-lg shadow-md ${bgColor} ${borderColor} border animate__animated animate__fadeInDown">
+                    ${iconHtml}
+                    <p class="ml-3 text-sm font-medium ${textColor}">${message}</p>
+                </div>
+            `;
+            messageContainer.innerHTML = messageHtml;
+            lucide.createIcons(); // Re-render Lucide icons for the new content
+
+            // Hide message after 3 seconds
+            setTimeout(() => {
+                messageContainer.classList.add('hidden');
+                messageContainer.innerHTML = '';
+            }, 3000);
+        }
+
+        signupForm.addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
-
-            const fullNameInput = document.getElementById('fullName');
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirmPassword');
-
-            const fullNameError = document.getElementById('fullNameError');
-            const emailError = document.getElementById('emailError');
-            const passwordError = document.getElementById('passwordError');
-            const confirmPasswordError = document.getElementById('confirmPasswordError');
 
             let isValid = true;
 
@@ -205,11 +256,20 @@
                 console.log('Email:', emailInput.value);
                 console.log('Password:', passwordInput.value);
 
+                showMessage('success', 'Account created successfully – redirecting...');
                 // In a real application, you would send this data to a server
                 // and redirect to the login page or main feed upon successful registration.
-                // For now, we'll just log to console and simulate a redirect.
-                alert('Registration successful! You can now log in.'); // Using alert for simulation as per instructions
-                window.location.href = 'login.html'; // Redirect to the login page
+                setTimeout(() => {
+                    window.location.href = 'sign-in.html'; // Redirect to the login page
+                }, 2000); // Redirect after 2 seconds to allow message to be seen
+            } else {
+                // Simulate a failed registration due to validation errors
+                showMessage('error', 'Please correct the errors in the form.');
+                // Add shake animation to the card
+                signupCard.classList.add('animate__shakeX');
+                signupCard.addEventListener('animationend', () => {
+                    signupCard.classList.remove('animate__shakeX');
+                }, { once: true });
             }
         });
     </script>
