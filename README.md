@@ -7,7 +7,7 @@ SocialSphere is a modern, responsive social media web application designed to pr
 SocialSphere comes packed with essential features to mimic a real-world social media platform:
 - User Authentication: Secure Login and Signup pages with clear success and error messages, including animations.
 - Consistent Navigation: A responsive sidebar navigation system across all main pages (Home, Search, Notifications, Reels, Chat, Profile, Settings, Edit Profile).
-- Home Feed: A dynamic user feed (on index.html) to display posts.
+- Home Feed: A dynamic user feed (on `index.html`) to display posts.
 - Create Post: Functionality to simulate uploading new content.
 - Chat/Messages: A dedicated chat interface for private conversations.
 - Reels: A section for short-form video content with autoplay and play/pause controls.
@@ -54,7 +54,7 @@ cd SocialSphere
 ```
 
 Open the HTML files in your browser:
-Simply open index.html, login.html, signup.html, or any other HTML file directly in your web browser. No local server is required for basic functionality.
+Simply open `index.html`, `login.html`, `signup.html`, or any other HTML file directly in your web browser. No local server is required for basic functionality.
 
 📁 Folder Structure
 The project follows a straightforward folder structure:
@@ -88,4 +88,4 @@ Google Fonts: For the Poppins and Inter typefaces.
 W3Schools: For providing publicly accessible test video URLs used in Reels.
 
 📝 License
-This project is open-source and available under the MIT License. See the LICENSE file for more details.
+This project is open-source and available under the MIT License. See the `LICENSE` file for more details.
