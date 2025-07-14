@@ -20,6 +20,9 @@
 
     <style>
         /* Custom styles for the gradient glow and fonts */
+        html {
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f0f2f5; /* Light gray background */
@@ -57,6 +60,14 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #8b5cf6; /* Darker purple */
         }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
 
         /* Sidebar styling */
         .sidebar {
@@ -293,16 +304,17 @@
     </aside>
 
     <!-- Main Content Wrapper -->
-    <div class="main-content-wrapper container mx-auto px-4 py-8 flex flex-col md:flex-row justify-center gap-8">
+    <div class="main-content-wrapper container mx-auto px-2 py-8 flex flex-col md:flex-row justify-center gap-8">
         <!-- Main Feed (Posts & Stories) -->
         <div class="main-feed w-full md:w-3/5 lg:w-2/5 flex-shrink-0">
             <!-- Stories Carousel -->
             <div class="bg-white p-4 rounded-xl shadow-md mb-8 animate__animated animate__fadeInDown" data-aos="fade-down">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Stories</h3>
-                <div id="storiesCarousel" class="owl-carousel owl-theme">
+                <div id="storiesContainer" class="flex gap-4 overflow-x-auto no-scrollbar px-1">
                     <!-- Stories will be dynamically loaded here -->
                 </div>
             </div>
+
 
             <!-- Posts Feed -->
             <div id="postsFeed" class="space-y-8">
@@ -466,7 +478,7 @@
     <!-- jQuery (required for Owl Carousel) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Owl Carousel JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script> -->
     <!-- AOS JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
@@ -562,32 +574,19 @@
 
         // Function to render stories
         function renderStories() {
-            const storiesCarousel = $('#storiesCarousel');
-            storiesCarousel.empty(); // Clear existing stories
+            const storiesContainer = document.getElementById('storiesContainer');
+            storiesContainer.innerHTML = ''; // Clear old
 
             storiesData.forEach(story => {
                 const storyHtml = `
-                    <div class="item text-center">
+                    <div class="flex-shrink-0 text-center">
                         <div class="story-circle mx-auto">
                             <img src="${story.avatar}" alt="${story.user}'s Story">
                         </div>
                         <p class="text-xs text-gray-700 mt-2">${story.user}</p>
                     </div>
                 `;
-                storiesCarousel.append(storyHtml);
-            });
-
-            // Initialize Owl Carousel after content is loaded
-            storiesCarousel.owlCarousel({
-                loop: false,
-                margin: 30,
-                nav: false,
-                dots: false,
-                responsive: {
-                    0: { items: 2 },
-                    600: { items: 4 },
-                    1000: { items: 7.7 }
-                }
+                storiesContainer.insertAdjacentHTML('beforeend', storyHtml);
             });
         }
 
