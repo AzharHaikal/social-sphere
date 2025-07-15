@@ -2,7 +2,9 @@
 ## 📌 Project Title: SocialSphere
 
 Live demo : https://socials-sphere.netlify.app/
-![Mockup Screenshot](assets/image/readme.png)
+
+![Mockup Screenshot](assets/images/readme.png)
+
 ---
 
 ## 📄 Description
