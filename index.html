@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SocialSphere - Home</title>
-    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" href="assets/images/logo.png" type="image/png">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Poppins & Inter -->
@@ -327,7 +327,7 @@
             <!-- Mini Profile Card -->
             <div class="bg-white p-6 rounded-xl shadow-md mb-8 sticky top-4 animate__animated animate__fadeInRight" data-aos="fade-left">
                 <div class="flex items-center space-x-4 mb-4">
-                    <img src="https://placehold.co/80x80/a78bfa/ffffff?text=U" alt="User Profile" class="w-20 h-20 rounded-full object-cover border-4 border-purple-400">
+                    <img src="assets/images/profile.png" alt="User Profile" class="w-20 h-20 rounded-full object-cover border-4 border-purple-400">
                     <div>
                         <h4 class="text-xl font-bold text-purple-700 font-poppins">Jane Doe</h4>
                         <p class="text-gray-500">@janedoe</p>
@@ -356,7 +356,7 @@
                 <div class="space-y-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <img src="https://placehold.co/50x50/3b82f6/ffffff?text=A" alt="User" class="w-12 h-12 rounded-full object-cover">
+                            <img src="assets/images/user-suggestion-1.png" alt="User" class="w-12 h-12 rounded-full object-cover">
                             <div>
                                 <p class="font-semibold text-gray-800">Alice Smith</p>
                                 <p class="text-gray-500 text-sm">@alicesmith</p>
@@ -366,10 +366,10 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <img src="https://placehold.co/50x50/06b6d4/ffffff?text=B" alt="User" class="w-12 h-12 rounded-full object-cover">
+                            <img src="assets/images/user-suggestion-2.png" alt="User" class="w-12 h-12 rounded-full object-cover">
                             <div>
-                                <p class="font-semibold text-gray-800">Bob Johnson</p>
-                                <p class="text-gray-500 text-sm">@bobjohnson</p>
+                                <p class="font-semibold text-gray-800">Sarah Mark</p>
+                                <p class="text-gray-500 text-sm">@sarahmark</p>
                             </div>
                         </div>
                         <button class="bg-blue-100 text-blue-600 px-4 py-1 rounded-full text-sm font-semibold hover:bg-blue-200 transition duration-200">Follow</button>
@@ -494,25 +494,25 @@
 
         // --- Mock Data ---
         const storiesData = [
-            { id: 1, user: 'Alice', avatar: 'https://placehold.co/60x60/a78bfa/ffffff?text=A' },
-            { id: 2, user: 'Bob', avatar: 'https://placehold.co/60x60/3b82f6/ffffff?text=B' },
-            { id: 3, user: 'Charlie', avatar: 'https://placehold.co/60x60/06b6d4/ffffff?text=C' },
-            { id: 4, user: 'Diana', avatar: 'https://placehold.co/60x60/8b5cf6/ffffff?text=D' },
-            { id: 5, user: 'Eve', avatar: 'https://placehold.co/60x60/2563eb/ffffff?text=E' },
-            { id: 6, user: 'Frank', avatar: 'https://placehold.co/60x60/10b981/ffffff?text=F' },
-            { id: 7, user: 'Grace', avatar: 'https://placehold.co/60x60/ef4444/ffffff?text=G' },
-            { id: 8, user: 'Heidi', avatar: 'https://placehold.co/60x60/f97316/ffffff?text=H' },
-            { id: 9, user: 'Jef', avatar: 'https://placehold.co/60x60/f97316/ffffff?text=J' },
-            { id: 10, user: 'Yuka', avatar: 'https://placehold.co/60x60/f97316/ffffff?text=Y' },
+            { id: 1, user: 'Alice', avatar: 'assets/images/user-1.png' },
+            { id: 2, user: 'Sarah', avatar: 'assets/images/user-2.png' },
+            { id: 3, user: 'Emely', avatar: 'assets/images/user-3.png' },
+            { id: 4, user: 'Diana', avatar: 'assets/images/user-4.png' },
+            { id: 5, user: 'Eve', avatar: 'assets/images/user-5.png' },
+            { id: 6, user: 'Frank', avatar: 'assets/images/user-6.png' },
+            { id: 7, user: 'Grace', avatar: 'assets/images/user-7.png' },
+            { id: 8, user: 'Heidi', avatar: 'assets/images/user-8.png' },
+            { id: 9, user: 'Jef', avatar: 'assets/images/user-9.png' },
+            { id: 10, user: 'Yuka', avatar: 'assets/images/user-10.png' },
         ];
 
         const postsData = [
             {
                 id: 1,
-                user: 'Jane Doe',
-                avatar: 'https://placehold.co/60x60/a78bfa/ffffff?text=U',
+                user: 'Alice Smith',
+                avatar: 'assets/images/user-1.png',
                 time: '2 hours ago',
-                image: 'https://placehold.co/800x600/3b82f6/ffffff?text=Beautiful+Landscape',
+                image: 'assets/images/post-1.png',
                 caption: 'Enjoying the serene beauty of nature! #nature #travel #peace',
                 likes: 125,
                 comments: [
@@ -522,10 +522,10 @@
             },
             {
                 id: 2,
-                user: 'Alice Smith',
-                avatar: 'https://placehold.co/60x60/3b82f6/ffffff?text=A',
+                user: 'Sarah Mark',
+                avatar: 'assets/images/user-2.png',
                 time: '5 hours ago',
-                image: 'https://placehold.co/800x600/06b6d4/ffffff?text=Cityscape+Vibes',
+                image: 'assets/images/post-2.png',
                 caption: 'City lights and late nights. ✨ #citylife #nightout',
                 likes: 88,
                 comments: [
@@ -535,10 +535,10 @@
             },
             {
                 id: 3,
-                user: 'Bob Johnson',
-                avatar: 'https://placehold.co/60x60/06b6d4/ffffff?text=B',
+                user: 'Heidi',
+                avatar: 'assets/images/user-8.png',
                 time: '1 day ago',
-                image: 'https://placehold.co/800x600/8b5cf6/ffffff?text=Delicious+Food',
+                image: 'assets/images/post-3.png',
                 caption: 'Homemade pasta for dinner! So good. 🍝 #cooking #foodie',
                 likes: 210,
                 comments: [
@@ -549,10 +549,10 @@
             },
             {
                 id: 4,
-                user: 'Diana Prince',
-                avatar: 'https://placehold.co/60x60/8b5cf6/ffffff?text=D',
+                user: 'Yuka Tanaka',
+                avatar: 'assets/images/user-10.png',
                 time: '2 days ago',
-                image: 'https://placehold.co/800x600/2563eb/ffffff?text=Workout+Motivation',
+                image: 'assets/images/post-4.png',
                 caption: 'Pushing my limits! 💪 Never give up. #fitness #motivation',
                 likes: 95,
                 comments: [
@@ -562,11 +562,11 @@
         ];
 
         const notificationsData = [
-            { id: 1, user: 'Alice Smith', avatar: 'https://placehold.co/40x40/a78bfa/ffffff?text=A', type: 'liked', content: 'liked your post.', time: '10m' },
-            { id: 2, user: 'Bob Johnson', avatar: 'https://placehold.co/40x40/3b82f6/ffffff?text=B', type: 'commented', content: 'commented on your post: "Looks delicious!"', time: '30m' },
-            { id: 3, user: 'Charlie Brown', avatar: 'https://placehold.co/40x40/06b6d4/ffffff?text=C', type: 'followed', content: 'started following you.', time: '1h' },
-            { id: 4, user: 'Diana Prince', avatar: 'https://placehold.co/40x40/8b5cf6/ffffff?text=D', type: 'liked', content: 'liked your post.', time: '2h' },
-            { id: 5, user: 'Eve Green', avatar: 'https://placehold.co/40x40/2563eb/ffffff?text=E', type: 'mentioned', content: 'mentioned you in a comment.', time: '5h' },
+            { id: 1, user: 'Alice Smith', avatar: 'assets/images/user-1.png', type: 'liked', content: 'liked your post.', time: '10m' },
+            { id: 2, user: 'Bob Johnson', avatar: 'assets/images/user-9.png', type: 'commented', content: 'commented on your post: "Looks delicious!"', time: '30m' },
+            { id: 3, user: 'Charlie Brown', avatar: 'assets/images/user-8.png', type: 'followed', content: 'started following you.', time: '1h' },
+            { id: 4, user: 'Diana Prince', avatar: 'assets/images/user-5.png', type: 'liked', content: 'liked your post.', time: '2h' },
+            { id: 5, user: 'Eve Green', avatar: 'assets/images/user-2.png', type: 'mentioned', content: 'mentioned you in a comment.', time: '5h' },
         ];
 
 

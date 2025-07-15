@@ -1,9 +1,14 @@
-🌐 SocialSphere: A Modern Social Media Web Application
-📌 Project Title: SocialSphere
-📄 Description
+# 🌐 SocialSphere: A Modern Social Media Web Application
+## 📌 Project Title: SocialSphere
+
+Live demo : https://socials-sphere.netlify.app/
+
+---
+
+## 📄 Description
 SocialSphere is a modern, responsive social media web application designed to provide a rich and engaging user experience. Built with a focus on clean design and intuitive navigation, it offers core social media functionalities, allowing users to connect, share, and interact seamlessly. This project serves as a showcase for front-end development skills, demonstrating responsive design, dynamic content rendering, and interactive user interfaces.
 
-✨ Features
+## ✨ Features
 SocialSphere comes packed with essential features to mimic a real-world social media platform:
 - User Authentication: Secure Login and Signup pages with clear success and error messages, including animations.
 - Consistent Navigation: A responsive sidebar navigation system across all main pages (Home, Search, Notifications, Reels, Chat, Profile, Settings, Edit Profile).
@@ -19,7 +24,7 @@ SocialSphere comes packed with essential features to mimic a real-world social m
 - Responsive Design: Optimized for seamless viewing and interaction across various devices (desktop, tablet, mobile).
 - Animations & Transitions: Smooth UI transitions and animations for an enhanced user experience.
 
-🖼️ Screenshots
+## 🖼️ Screenshots
 To make your README even more appealing, consider adding screenshots of the key pages here.
 - Login Page: [Insert Screenshot of Login Page]
 - Signup Page: [Insert Screenshot of Signup Page]
@@ -29,7 +34,7 @@ To make your README even more appealing, consider adding screenshots of the key 
 - Chat Page: [Insert Screenshot of Chat Page]
 - Settings Page: [Insert Screenshot of Settings Page]
 
-🛠️ Technologies Used
+## 🛠️ Technologies Used
 This project leverages a combination of modern web technologies to deliver its features:
 - HTML5: For structuring the web content.
 - CSS3: For styling and visual presentation.
@@ -40,7 +45,7 @@ This project leverages a combination of modern web technologies to deliver its f
 - Lucide Icons: A collection of beautiful and customizable open-source icons.
 - Google Fonts: Poppins and Inter for modern typography.
 
-🚀 Getting Started
+## 🚀 Getting Started
 To get a local copy up and running, follow these simple steps:
 
 1. Clone the repository:
@@ -56,7 +61,7 @@ cd SocialSphere
 Open the HTML files in your browser:
 Simply open `index.html`, `login.html`, `signup.html`, or any other HTML file directly in your web browser. No local server is required for basic functionality.
 
-📁 Folder Structure
+## 📁 Folder Structure
 The project follows a straightforward folder structure:
 
 ```bash
@@ -74,7 +79,7 @@ SocialSphere/
 └── README.md           # This file
 ```
 
-💡 Credits
+## 💡 Credits
 Tailwind CSS: For efficient and responsive styling.
 
 Animate.css: For smooth UI animations.
@@ -87,5 +92,5 @@ Google Fonts: For the Poppins and Inter typefaces.
 
 W3Schools: For providing publicly accessible test video URLs used in Reels.
 
-📝 License
+## 📝 License
 This project is open-source and available under the MIT License. See the `LICENSE` file for more details.
